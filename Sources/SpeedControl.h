@@ -24,6 +24,5 @@
 void updateSpeedControl();
 void countSpeed();
 void setSpinSpeed(float targetSpeed);
-void stopSpin();
 
 #endif /* SOURCES_SPEEDCONTROL_H_ */

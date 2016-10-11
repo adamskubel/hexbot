@@ -130,7 +130,7 @@ int main(void)
 		d2 = malloc(sizeof(char)*(read+1));
 		strncpy(d2,data,read);
 
-		SEGGER_RTT_printf(0,"Rcv: '%s'\n",d2);
+//		SEGGER_RTT_printf(0,"Rcv: '%s'\n",d2);
 
 		token = strtok(d2," ");
 		if (token == NULL)
@@ -142,7 +142,19 @@ int main(void)
 			if (arg != NULL)
 				setLightValue((byte)strtol(arg, &end,2));
 			else
-				SEGGER_RTT_WriteString(0,InvalidArguments);
+				SEGGER_RTT_printf(0,InvalidArguments);
+		}
+		else if (strcmp(token,"cw") == 0)
+		{
+			jogWheel(-1, 0x7FFF);
+			WAIT1_Waitms(1000);
+			stopWheel();
+		}
+		else if (strcmp(token,"ccw") == 0)
+		{
+			jogWheel(1, 0x7FFF);
+			WAIT1_Waitms(1000);
+			stopWheel();
 		}
 		else if (strcmp(token,SpinCommand) == 0)
 		{
@@ -161,7 +173,7 @@ int main(void)
 		else if (strcmp(token,HaltCommand) == 0)
 		{
 			stopWheel();
-			stopSpin();
+			setSpinSpeed(0);
 		}
 		else if (strcmp(token,WheelRotateCommand) == 0){
 			char * dirArg = strtok(NULL," ");
@@ -198,6 +210,8 @@ int main(void)
 		else {
 			SEGGER_RTT_printf(0,"%s",InvalidCommand);
 		}
+
+		free(d2);
 
 	}
 

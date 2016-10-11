@@ -17,7 +17,7 @@
 
 #define SEARCH_RATIO 0x7FFF
 #define EXIT_SEARCH_TIME 1000
-#define LOCAL_SEARCH_TIME 500
+#define LOCAL_SEARCH_TIME 800
 
 #define INIT_INVALID 0
 #define INIT_POSITIVE 1
@@ -36,41 +36,23 @@ void onNotch(){
 	case STATE_FORWARD_SEARCH:
 		stopWheel();
 		state = STATE_SEARCH_COMPLETE;
-		if (EInt2_GetVal() == 0)
-		{
-			initState = INIT_NEGATIVE;
-			currentNotch = 0;
-		} else
-		{
-			initState = INIT_POSITIVE;
-			currentNotch = 1;
-		}
-		SEGGER_RTT_printf(0,"FWD_Notch: %d",currentNotch);
+		initState = INIT_POSITIVE;
+		currentNotch = 1;
+		SEGGER_RTT_printf(0,"FWD_Notch: %d\n",currentNotch);
 		break;
 	case STATE_REVERSE_SEARCH:
 		stopWheel();
 		state = STATE_SEARCH_COMPLETE;
-		if (EInt2_GetVal() == 1)
-		{
-			initState = INIT_POSITIVE;
-			currentNotch = 0;
-		}
-		else
-		{
-			initState = INIT_NEGATIVE;
-			currentNotch = 1;
-		}
-		SEGGER_RTT_printf(0,"REV_Notch: %d",currentNotch);
+		initState = INIT_POSITIVE;
+		currentNotch = 0;
+		SEGGER_RTT_printf(0,"REV_Notch: %d\n",currentNotch);
 		break;
 	case STATE_MOVING:
-		if (EInt2_GetVal() == 1)
-		{
-			currentNotch = 1 - currentNotch;
-			stopWheel();
-			state = STATE_WAITING;
-			SEGGER_RTT_printf(0,"Arrived at notch %d\n",currentNotch);
-			SEGGER_RTT_printf(0,"SlotVal = %d\n", EInt2_GetVal());
-		}
+		currentNotch = 1 - currentNotch;
+		stopWheel();
+		state = STATE_WAITING;
+		SEGGER_RTT_printf(0,"Arrived at notch %d\n",currentNotch);
+		SEGGER_RTT_printf(0,"SlotVal = %d\n", EInt2_GetVal());
 		break;
 	case STATE_JOGGING:
 		stopWheel();
@@ -120,8 +102,8 @@ void initializeWheel(bool reverse)
 
 	if (state == STATE_SEARCH_COMPLETE)
 	{
-		SEGGER_RTT_printf(0,"Init_1");
 		spinLight();
+		SEGGER_RTT_printf(0,"Init_1");
 		state = STATE_WAITING;
 	}
 	else if (EInt2_GetVal() == 0)
@@ -137,11 +119,17 @@ void initializeWheel(bool reverse)
 			SEGGER_RTT_printf(0,"Init_2");
 			state = STATE_WAITING;
 		}
+		else
+		{
+			state = STATE_WAITING;
+			errorBlink();
+			SEGGER_RTT_printf(0,"Init2_Fail: SlotVal = %d", EInt2_GetVal());
+		}
 	}
 	else {
 		state = STATE_WAITING;
-		SEGGER_RTT_printf(0,"Init_Fail: SlotVal = %d", EInt2_GetVal());
 		errorBlink();
+		SEGGER_RTT_printf(0,"Init_Fail: SlotVal = %d", EInt2_GetVal());
 	}
 
 }

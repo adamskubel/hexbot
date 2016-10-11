@@ -12,6 +12,8 @@
 uint16_t lastTime=0;
 float speed = 0;
 
+void stopSpin();
+
 void countSpeed()
 {
 	uint16_t time;
