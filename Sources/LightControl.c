@@ -34,3 +34,14 @@ void spinLight()
 		WAIT1_Waitms(300);
 	}
 }
+
+
+void errorBlink()
+{
+	for (int i = 0; i < 10; i++) {
+		WAIT1_Waitms(100);
+		setLightValue(0xFF);
+		WAIT1_Waitms(100);
+		setLightValue(0x00);
+	}
+}

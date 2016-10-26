@@ -83,6 +83,27 @@
 #include "SerialCommunicator.h"
 #include "NotchedWheelControl.h"
 #include "SpeedControl.h"
+#include "LightControl.h"
+
+int getHundreds(float val){
+	return (int)((val - ((float)((int)val)))*100.0f);
+}
+
+int getIntArg(int defaultValue){
+
+	char * end;
+	char * arg = strtok(NULL," ");
+	if (arg == NULL)
+		return defaultValue;
+	return strtol(arg,&end,10);
+}
+
+float getFloatArg()
+{
+	char * end;
+	char * arg = strtok(NULL," ");
+	return strtof(arg,&end);
+}
 
 /*lint -save  -e970 Disable MISRA rule (6.3) checking. */
 int main(void)
@@ -105,7 +126,7 @@ int main(void)
 
 
 	const char * SetLightCommand = "setLight";
-	const char * SpinCommand = "setSpinSpeed";
+	const char * SpinCommand = "spin";
 	const char * NotchCommand = "moveNotch";
 	const char * HaltCommand = "halt";
 	const char * InvalidArguments = "ArgFail\0";
@@ -156,6 +177,23 @@ int main(void)
 			WAIT1_Waitms(1000);
 			stopWheel();
 		}
+		else if (strcmp(token,"brake") == 0)
+		{
+			setSpinSpeed(0);
+			unsigned overshoot = (unsigned)getIntArg(0);
+			setOvershoot(overshoot);
+			jogWheel(-1, 0xFFFF);
+			setLightValue(HEXLIGHT_BRAKE_START);
+			WAIT1_Waitms(3000);
+			setOvershoot(0);
+			stopWheel();
+		}
+		else if (strcmp(token,"recover") == 0)
+		{
+			jogWheel(1, 0xFFFF);
+			WAIT1_Waitms(3000);
+			stopWheel();
+		}
 		else if (strcmp(token,SpinCommand) == 0)
 		{
 			char * arg = strtok(NULL," ");
@@ -186,7 +224,7 @@ int main(void)
 				jogWheel(strtol(dirArg,&end,10),strtof(ratioArg,&end)*(float)0x7FFF);
 				long wait = strtol(timeArg,&end,10);
 				if (wait < 0) wait = 0;
-				if (wait > 2000) wait = 2000;
+				if (wait > 20000) wait = 20000;
 				WAIT1_Waitms(wait);
 				stopWheel();
 			}
@@ -206,6 +244,76 @@ int main(void)
 			else {
 				moveToNotch(strtol(notchArg,&end,10));
 			}
+		}
+		else if (strcmp(token,"test") == 0){
+			char * delayArg = strtok(NULL," ");
+			char * speedArg = strtok(NULL," ");
+			char * overshootArg = strtok(NULL," ");
+
+			unsigned delay = 10000;
+			unsigned overshoot = 0;
+			float spinSpeed = 5;
+			if (delayArg != NULL)
+				delay = strtol(delayArg,&end,10);
+			if (speedArg != NULL)
+				spinSpeed = strtof(speedArg,&end);
+			if (overshootArg != NULL)
+				overshoot = strtol(overshootArg,&end,10);
+
+			for (int s=0;s<64;s++){
+				WAIT1_Waitms(delay/64);
+				setLightValue((byte)s);
+			}
+
+			errorBlink();
+
+
+			bool ready = FALSE;
+			setSpinSpeed(spinSpeed);
+			for (int s=0;s<10;s++){
+				WAIT1_Waitms(2000);
+				if (abs(getAvgSpeed() - spinSpeed) < 0.5f || getAvgSpeed() > spinSpeed)
+				{
+					ready = TRUE;
+					break;
+				}
+			}
+			int peakSpeed = (int)getAvgSpeed();
+			int peakInstSpeed = (int)getInstSpeed();
+
+			setSpinSpeed(0);
+
+			//Brake
+			setOvershoot(overshoot);
+			jogWheel(1,0xFFFF);
+			WAIT1_Waitms(3000);
+			setOvershoot(0);
+			stopWheel();
+
+			//Recover wheel
+			WAIT1_Waitms(500);
+			jogWheel(-1,0xFFFF);
+			WAIT1_Waitms(3000);
+			stopWheel();
+
+			if (ready){
+				spinLight();
+				setLightValue(HEXLIGHT_TEST_COMPLETE);
+			}
+			else
+			{
+				SEGGER_RTT_printf(0,"Peak avg speed was %d",peakSpeed);
+				SEGGER_RTT_printf(0,"Peak inst speed was %d",peakInstSpeed);
+				errorBlink();
+				setLightValue(HEXLIGHT_TOO_SLOW);
+			}
+		}
+		else if (strcmp(token,"getSpeed") == 0){
+			SEGGER_RTT_printf(0,"AvgSpeed = %d.%d\n",(int)getAvgSpeed(), getHundreds(getAvgSpeed()));
+			SEGGER_RTT_printf(0,"InstSpeed = %d.%d\n",(int)(getInstSpeed()),getHundreds(getInstSpeed()));
+		}
+		else if (strcmp(token,"sleep") == 0){
+			Cpu_SetOperationMode(DOM_SLEEP,NULL,NULL);
 		}
 		else {
 			SEGGER_RTT_printf(0,"%s",InvalidCommand);

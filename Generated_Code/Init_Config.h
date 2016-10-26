@@ -8,7 +8,7 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-24, 22:54, # CodeGen: 55
+**     Date/Time   : 2016-10-11, 23:35, # CodeGen: 66
 **     Abstract    :
 **         This file collects Processor Expert components configuration 
 **         and interface files.
@@ -192,7 +192,7 @@
 **            Pendable service                             : Disabled
 **            MCG Loss of lock                             : Disabled
 **     Contents    :
-**         No public methods
+**         SetOperationMode - LDD_TError Cpu_SetOperationMode(LDD_TDriverOperationMode OperationMode,...
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.

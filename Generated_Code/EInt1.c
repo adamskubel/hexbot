@@ -7,7 +7,7 @@
 **     Version     : Component 02.105, Driver 01.00, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-23, 09:01, # CodeGen: 48
+**     Date/Time   : 2016-10-15, 01:28, # CodeGen: 69
 **     Abstract    :
 **         This component "ExtInt" implements an external 
 **         interrupt, its control methods and interrupt/event 
@@ -24,7 +24,9 @@
 **          Initialization                                 : 
 **            Enabled in init. code                        : yes
 **     Contents    :
-**         GetVal - bool EInt1_GetVal(void);
+**         Enable  - void EInt1_Enable(void);
+**         Disable - void EInt1_Disable(void);
+**         GetVal  - bool EInt1_GetVal(void);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -80,6 +82,40 @@
 #ifdef __cplusplus
 extern "C" {
 #endif 
+
+/*
+** ===================================================================
+**     Method      :  EInt1_Enable (component ExtInt)
+**     Description :
+**         Enable the component - the external events are accepted.
+**         This method is available only if HW module allows
+**         enable/disable of the interrupt.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+/*
+void EInt1_Enable(void)
+
+**  This method is implemented as a macro. See EInt1.h file.  **
+*/
+
+/*
+** ===================================================================
+**     Method      :  EInt1_Disable (component ExtInt)
+**     Description :
+**         Disable the component - the external events are not accepted.
+**         This method is available only if HW module allows
+**         enable/disable of the interrupt.
+**     Parameters  : None
+**     Returns     : Nothing
+** ===================================================================
+*/
+/*
+void EInt1_Disable(void)
+
+**  This method is implemented as a macro. See EInt1.h file.  **
+*/
 
 /*
 ** ===================================================================

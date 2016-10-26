@@ -24,7 +24,7 @@ void initializeWheel(bool direction);
 void jogWheel(int direction, int ratio);
 void stopWheel();
 void moveToNotch(int notchIndex);
-
+void setOvershoot(unsigned overshoot);
 
 
 #endif /* SOURCES_NOTCHEDWHEELCONTROL_H_ */

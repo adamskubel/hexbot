@@ -8,13 +8,13 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-10-06, 15:59, # CodeGen: 63
+**     Date/Time   : 2016-10-11, 23:35, # CodeGen: 66
 **     Abstract    :
 **
 **     Settings    :
 **
 **     Contents    :
-**         No public methods
+**         SetOperationMode - LDD_TError Cpu_SetOperationMode(LDD_TDriverOperationMode OperationMode,...
 **
 **     (c) Freescale Semiconductor, Inc.
 **     2004 All Rights Reserved

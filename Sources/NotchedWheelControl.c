@@ -26,6 +26,7 @@
 byte state = 0,notches = 0;
 unsigned initState = 0;
 int currentNotch = -1, rotatingDirection;
+unsigned overshoot = 0;
 
 
 void rotate(int direction, int ratio);
@@ -55,21 +56,12 @@ void onNotch(){
 		SEGGER_RTT_printf(0,"SlotVal = %d\n", EInt2_GetVal());
 		break;
 	case STATE_JOGGING:
+		WAIT1_Waitms(overshoot);
 		stopWheel();
 		state = STATE_WAITING;
 		break;
 	}
 
-}
-
-void errorBlink()
-{
-	for (int i = 0; i < 10; i++) {
-		WAIT1_Waitms(200);
-		setLightValue(0xFF);
-		WAIT1_Waitms(200);
-		setLightValue(0x00);
-	}
 }
 
 /**
@@ -166,6 +158,11 @@ void moveToNotch(int targetNotch)
 void stopWheel()
 {
 	rotate(0,0);
+}
+
+void setOvershoot(unsigned os)
+{
+	overshoot = os;
 }
 
 void rotate(int direction, int ratio)

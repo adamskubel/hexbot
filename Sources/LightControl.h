@@ -15,11 +15,12 @@
 #include "Bits1.h"
 #include "BitsIoLdd1.h"
 #include "WAIT1.h"
+#include "LightCodes.h"
 
 void blinky(int dir);
 void setLightValue(byte value);
 void spinLight();
-
+void errorBlink();
 
 
 #endif /* SOURCES_LIGHTCONTROL_H_ */

@@ -17,6 +17,7 @@
 #include "PwmLdd2.h"
 #include "FC321.h"
 #include "stdlib.h"
+#include "EInt1.h"
 
 #ifndef SOURCES_SPEEDCONTROL_H_
 #define SOURCES_SPEEDCONTROL_H_
@@ -24,5 +25,7 @@
 void updateSpeedControl();
 void countSpeed();
 void setSpinSpeed(float targetSpeed);
+float getAvgSpeed();
+float getInstSpeed();
 
 #endif /* SOURCES_SPEEDCONTROL_H_ */

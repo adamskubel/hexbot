@@ -8,13 +8,13 @@
 **     Repository  : Kinetis
 **     Datasheet   : K22P121M120SF7RM, Rev. 1, March 24, 2014
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-23, 08:13, # CodeGen: 43
+**     Date/Time   : 2016-10-11, 23:35, # CodeGen: 66
 **     Abstract    :
 **
 **     Settings    :
 **
 **     Contents    :
-**         No public methods
+**         SetOperationMode - LDD_TError Cpu_SetOperationMode(LDD_TDriverOperationMode OperationMode,...
 **
 **     (c) Freescale Semiconductor, Inc.
 **     2004 All Rights Reserved
@@ -114,6 +114,8 @@ void Components_Init(void);
 #endif /* CPU_COMPONENTS_INIT */
 
 /* Method synonyms. Following constants maps static CPU methods with enabled user methods of which names are derived from the CPU component name */
+
+#define Cpu_SetOperationMode(OperationMode, ModeChangeCallback, ModeChangeCallbackParamPtr) CPU_SetOperationMode(OperationMode, ModeChangeCallback, ModeChangeCallbackParamPtr)
 
 /* {Default RTOS Adapter} ISR function prototype */
 PE_ISR(Cpu_ivINT_PORTC);

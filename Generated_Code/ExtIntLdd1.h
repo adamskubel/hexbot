@@ -7,7 +7,7 @@
 **     Version     : Component 02.156, Driver 01.02, CPU db: 3.00.000
 **     Repository  : Kinetis
 **     Compiler    : GNU C Compiler
-**     Date/Time   : 2016-09-23, 08:13, # CodeGen: 43
+**     Date/Time   : 2016-10-15, 01:28, # CodeGen: 69
 **     Abstract    :
 **         This component, "ExtInt_LDD", provide a low level API 
 **         for unified access of external interrupts handling
@@ -24,8 +24,10 @@
 **            Enabled in init. code                        : yes
 **            Auto initialization                          : yes
 **     Contents    :
-**         Init   - LDD_TDeviceData* ExtIntLdd1_Init(LDD_TUserData *UserDataPtr);
-**         GetVal - bool ExtIntLdd1_GetVal(LDD_TDeviceData *DeviceDataPtr);
+**         Init    - LDD_TDeviceData* ExtIntLdd1_Init(LDD_TUserData *UserDataPtr);
+**         Enable  - void ExtIntLdd1_Enable(LDD_TDeviceData *DeviceDataPtr);
+**         Disable - void ExtIntLdd1_Disable(LDD_TDeviceData *DeviceDataPtr);
+**         GetVal  - bool ExtIntLdd1_GetVal(LDD_TDeviceData *DeviceDataPtr);
 **
 **     Copyright : 1997 - 2015 Freescale Semiconductor, Inc. 
 **     All Rights Reserved.
@@ -102,6 +104,8 @@ extern "C" {
 
 /* Methods configuration constants - generated for all enabled component's methods */
 #define ExtIntLdd1_Init_METHOD_ENABLED /*!< Init method of the component ExtIntLdd1 is enabled (generated) */
+#define ExtIntLdd1_Enable_METHOD_ENABLED /*!< Enable method of the component ExtIntLdd1 is enabled (generated) */
+#define ExtIntLdd1_Disable_METHOD_ENABLED /*!< Disable method of the component ExtIntLdd1 is enabled (generated) */
 #define ExtIntLdd1_GetVal_METHOD_ENABLED /*!< GetVal method of the component ExtIntLdd1 is enabled (generated) */
 
 /* Events configuration constants - generated for all enabled component's events */
@@ -131,6 +135,38 @@ extern "C" {
 */
 /* ===================================================================*/
 LDD_TDeviceData* ExtIntLdd1_Init(LDD_TUserData *UserDataPtr);
+
+/*
+** ===================================================================
+**     Method      :  ExtIntLdd1_Enable (component ExtInt_LDD)
+*/
+/*!
+**     @brief
+**         Enable the component - the external events are accepted.
+**         This method is available only if HW module allows
+**         enable/disable of the interrupt.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by <Init> method.
+*/
+/* ===================================================================*/
+void ExtIntLdd1_Enable(LDD_TDeviceData *DeviceDataPtr);
+
+/*
+** ===================================================================
+**     Method      :  ExtIntLdd1_Disable (component ExtInt_LDD)
+*/
+/*!
+**     @brief
+**         Disable the component - the external events are not accepted.
+**         This method is available only if HW module allows
+**         enable/disable of the interrupt.
+**     @param
+**         DeviceDataPtr   - Device data structure
+**                           pointer returned by <Init> method.
+*/
+/* ===================================================================*/
+void ExtIntLdd1_Disable(LDD_TDeviceData *DeviceDataPtr);
 
 /*
 ** ===================================================================
